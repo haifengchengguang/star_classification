@@ -23,7 +23,7 @@ from collections import Counter
 
 tf.config.experimental.list_physical_devices('GPU')
 # 载入数据
-df = pd.read_csv(r"C:\Users\Administrator\Desktop\full_match_rizjhkw1_id_ra_dec.csv")
+df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec.csv")
 X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
 Y = df.values[1:, 70]
 subclass_amount=21
@@ -85,13 +85,14 @@ model = baseline_model(subclass_am=subclass_amount)
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_L/myAlex_{epoch}.h5',
-                                                save_best_only=True,
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc_normal1/myAlex_{epoch}.h5',
+
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
-epochs = 1
+#save_best_only=True,
+epochs = 70
 BATCH_SIZE = 32
-# tensorflow2.1 recommend to using fit
+# tensorflow2.1 recommend to using           fit
 # history = model.fit(x=train_dataset,
 #                         steps_per_epoch=train_num // batch_size,
 #                         epochs=epochs,
@@ -138,12 +139,13 @@ def plot_confusion_matrix(cm, classes, title='Confusion matrix', cmap=plt.cm.jet
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
     plt.colorbar()
     tick_marks = np.arange(len(classes))
+    print(len(classes))
     #plt.xticks(tick_marks, ('F0', 'F4', 'K0', 'K1', 'k2', 'K3', 'K4', 'K5', 'L','M0','M1','M2','M3','M4','M5','M6','M7','M8','M9','gM9','sdm'))
     #plt.yticks(tick_marks, ('F0', 'F4', 'K0', 'K1', 'k2', 'K3', 'K4', 'K5', 'L','M0','M1','M2','M3','M4','M5','M6','M7','M8','M9','gM9','sdm'))
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, '{:.2f}'.format(cm[i, j]), horizontalalignment="center",
-                 color="white" if cm[i, j] > thresh else "black")
+                 color="white" if cm[i, j] > thresh else "black",fontsize=4)
     plt.tight_layout()
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
@@ -151,8 +153,12 @@ def plot_confusion_matrix(cm, classes, title='Confusion matrix', cmap=plt.cm.jet
     plt.show()
 def plot_confuse(model, x_val, y_val):
     predictions = model.predict_classes(x_val)
+    predictions_unique = np.unique(predictions)
+    predictions_list=predictions_unique.tolist()
+    print(predictions_list)
     truelabel = y_val.argmax(axis=-1)  # 将one-hot转化为label
     truelabel_unique=np.unique(truelabel)
+    #print(truelabel)
     print(truelabel_unique)
     truelabel_list=truelabel_unique.tolist()
     print(truelabel_list)
