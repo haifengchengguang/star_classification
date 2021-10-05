@@ -1,91 +1,91 @@
 # -*- coding: utf8 -*-
 import os
 import json
+
+from model1 import baseline_model
+from pretreatment import subclass_amount, X_smotesampled, y_smotesampled, X_test, Y_test
+
 os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin")
 os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/cudnn/bin")
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-import keras
-from keras.models import Sequential
-from keras.utils.vis_utils import plot_model
-from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from sklearn.preprocessing import LabelEncoder
-from keras.layers import Dense, Dropout, Flatten, Conv1D, MaxPooling1D, ZeroPadding1D
-from keras.models import model_from_json
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import itertools
-from alexnet import AlexNet_v1
 from collections import Counter
 
 tf.config.experimental.list_physical_devices('GPU')
-# 载入数据
-df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec.csv")
-X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
-Y = df.values[1:, 70]
-subclass_amount=21
-# 恒星分类编码为数字
-encoder = LabelEncoder()
-Y_encoded = encoder.fit_transform(Y)
-Y_onehot = np_utils.to_categorical(Y_encoded)
-classes_1=encoder.classes_
-a=list(range(subclass_amount))
-classes_1.tolist()
-d=zip(a,classes_1)
-c=dict(d)
-print(c)
-json_str = json.dumps(c)
-with open('class_indices.json', 'w') as json_file:
-    json_file.write(json_str)
-# 划分训练集，测试集
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.1, random_state=0)
-print(type(X_test))
-print(type(Y_train))
-print(Counter(Y))
 
-# ytest_class=encoder.inverse_transform(Y_test)
-# print(ytest_class)
-from imblearn.over_sampling import SMOTE
-sm = SMOTE(k_neighbors=1)
-X_train_=X_train.reshape(X_train.shape[0],-1)
-X_smotesampled, y_smotesampled = sm.fit_resample(X_train_,Y_train)
-X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
-print(type(X_smotesampled.shape))
-print(X_smotesampled)
+# subclass_amount=21
+#
+# # 载入数据
+# df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec.csv")
+# X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
+# Y = df.values[1:, 70]
+#
+# # 恒星分类编码为数字
+# encoder = LabelEncoder()
+# Y_encoded = encoder.fit_transform(Y)
+# Y_onehot = np_utils.to_categorical(Y_encoded)
+# classes_1=encoder.classes_
+# a=list(range(subclass_amount))
+# classes_1.tolist()
+# d=zip(a,classes_1)
+# c=dict(d)
+# print(c)
+# json_str = json.dumps(c)
+# with open('class_indices.json', 'w') as json_file:
+#     json_file.write(json_str)
+# # 划分训练集，测试集
+# X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.1, random_state=0)
+# print(type(X_test))
+# print(type(Y_train))
+# print(Counter(Y))
+#
+# # ytest_class=encoder.inverse_transform(Y_test)
+# # print(ytest_class)
+# from imblearn.over_sampling import SMOTE
+# sm = SMOTE(k_neighbors=1)
+# X_train_=X_train.reshape(X_train.shape[0],-1)
+# X_smotesampled, y_smotesampled = sm.fit_resample(X_train_,Y_train)
+# X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
+# print(type(X_smotesampled.shape))
+#print(X_smotesampled)
 
 # 定义神经网络
-def baseline_model(subclass_am):
-    model = Sequential()
-    # model.add(ZeroPadding1D((3,3),input_shape=(45, 1)))
-    model.add(Conv1D(48, kernel_size=3, strides=4, activation='relu', input_shape=(45, 1)))
-    model.add(MaxPooling1D(pool_size=3, strides=2))
-    model.add(Conv1D(128, kernel_size=3, padding="same", activation='relu'))
-    model.add(MaxPooling1D(pool_size=3, strides=2))
-    model.add(Conv1D(192, kernel_size=3, padding="same", activation='relu'))
-    model.add(Conv1D(192, kernel_size=3, padding="same", activation='relu'))
-    model.add(Conv1D(128, kernel_size=3, padding="same", activation='relu'))
-    model.add(MaxPooling1D(pool_size=1, strides=2))
-    model.add(Flatten())
-    model.add(Dropout(0.5))
-    model.add(Dense(2048, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(2048, activation='relu'))
-    model.add(Dense(subclass_am, activation='softmax'))
-    # plot_model(model, to_file='./model_classifier.png', show_shapes=True)
-    print(model.summary())
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    return model
+# def baseline_model(subclass_am):
+#     model = Sequential()
+#     # model.add(ZeroPadding1D((3,3),input_shape=(45, 1)))
+#     model.add(Conv1D(48, kernel_size=3, strides=4, activation='relu', input_shape=(45, 1)))
+#     model.add(MaxPooling1D(pool_size=3, strides=2))
+#     model.add(Conv1D(128, kernel_size=3, padding="same", activation='relu'))
+#     model.add(MaxPooling1D(pool_size=3, strides=2))
+#     model.add(Conv1D(192, kernel_size=3, padding="same", activation='relu'))
+#     model.add(Conv1D(192, kernel_size=3, padding="same", activation='relu'))
+#     model.add(Conv1D(128, kernel_size=3, padding="same", activation='relu'))
+#     model.add(MaxPooling1D(pool_size=1, strides=2))
+#     model.add(Flatten())
+#     model.add(Dropout(0.5))
+#     model.add(Dense(2048, activation='relu'))
+#     model.add(Dropout(0.5))
+#     model.add(Dense(2048, activation='relu'))
+#     model.add(Dense(subclass_am, activation='softmax'))
+#     # plot_model(model, to_file='./model_classifier.png', show_shapes=True)
+#     print(model.summary())
+#     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+#     return model
 
 
-model = baseline_model(subclass_am=subclass_amount)
+model = baseline_model(subclass_amount=subclass_amount)
 # model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0005),
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc_normal1/myAlex_{epoch}.h5',
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc/myAlex_{epoch}.h5',
 
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
@@ -131,6 +131,7 @@ plt.legend()
 plt.xlabel('epochs')
 plt.ylabel('accuracy')
 plt.show()
+
 #混淆矩阵定义
 def plot_confusion_matrix(cm, classes, title='Confusion matrix', cmap=plt.cm.jet):
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -182,5 +183,6 @@ def plot_confuse(model, x_val, y_val):
 # predicted = loaded_model.predict(X)
 # predicted_label = loaded_model.predict_classes(X)
 # print("predicted label:\n " + str(predicted_label))
+
 # 显示混淆矩阵
 plot_confuse(model, X_test, Y_test)

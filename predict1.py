@@ -18,8 +18,8 @@ def main():
 
     json_file = open(json_path, "r")
     class_indict = json.load(json_file)
-
-    model=baseline_model(subclass_amount=21)
+    subclass_am=21
+    model=baseline_model(subclass_amount=subclass_am)
     weighs_path = "./save_weights/myAlex_45.h5"
     #assert os.path.exists(img_path), "file: '{}' dose not exist.".format(weighs_path)
     model.load_weights(weighs_path)
