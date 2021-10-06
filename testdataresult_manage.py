@@ -29,7 +29,7 @@ for i in range(0, lenth):
     print(max_index.iloc[0])
     result=np.append(result,[[indexlist[0],max_index.iloc[0]]],axis=0)
     print(i)
-np.savetxt('testdataresult_subclass.csv', result, fmt="%s",delimiter=',')
+np.savetxt('testdataresult_subclass.csv', result, fmt="%.5f",delimiter=',')
 print("end")
 
     # row_max_value=row.max()
