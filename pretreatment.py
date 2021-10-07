@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 
-df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec.csv")
+df = pd.read_csv(r"E:\学习资料\天文\作业五\desktop912\full_match_rizjhkw1_id_ra_dec.csv")
 X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
 Y = df.values[1:, 70]
 #subclass_amount=21
