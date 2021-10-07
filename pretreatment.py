@@ -50,7 +50,7 @@ X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
 print(type(X_smotesampled.shape))
 
 #混淆矩阵定义
-def plot_confusion_matrix(cm, classes,i, title='Confusion matrix', cmap=plt.cm.jet):
+def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm.jet):
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
@@ -67,7 +67,7 @@ def plot_confusion_matrix(cm, classes,i, title='Confusion matrix', cmap=plt.cm.j
     plt.tight_layout()
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
-    plt.savefig(f'./save_weights_extinc_png/test_{i}.png', dpi=400, bbox_inches='tight', transparent=False)
+    plt.savefig(f'./save_weights_extinc_png/test_{i_1}.png', dpi=400, bbox_inches='tight', transparent=False)
     plt.show()
 def plot_confuse(model, x_val, y_val,i):
     predictions = model.predict_classes(x_val)
