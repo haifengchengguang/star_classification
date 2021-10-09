@@ -14,8 +14,8 @@ from collections import Counter
 from imblearn.over_sampling import SMOTE
 
 df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45.csv")
-X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
-Y = df.values[1:, 70]
+X = np.expand_dims(df.values[:, 22:67].astype(float), axis=2)
+Y = df.values[:, 70]
 #subclass_amount=21
 # 恒星分类编码为数字
 encoder = LabelEncoder()
