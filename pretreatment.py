@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 
-df = pd.read_csv(r"E:\学习资料\天文\作业五\desktop912\full_match_rizjhkw1_id_ra_dec.csv")
+df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45.csv")
 X = np.expand_dims(df.values[1:, 22:67].astype(float), axis=2)
 Y = df.values[1:, 70]
 #subclass_amount=21
@@ -67,15 +67,17 @@ def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm
     plt.tight_layout()
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
-    plt.savefig(f'./save_weights_extinc_png/test_{i_1}.png', dpi=400, bbox_inches='tight', transparent=False)
+    plt.savefig(f'./save_weights_extinc_1009_png/test_{i_1}.png', dpi=400, bbox_inches='tight', transparent=False)
     plt.show()
 def plot_confuse(model, x_val, y_val,i):
     predictions = model.predict_classes(x_val)
     truelabel = y_val.argmax(axis=-1)  # 将one-hot转化为label
     truelabel_unique=np.unique(truelabel)
     print(truelabel_unique)
-    truelabel_list=truelabel_unique.tolist()
-    print(truelabel_list)
+    #truelabel_list=truelabel_unique.tolist()
+    #print(truelabel_list)
+    predictions_unique=np.unique(predictions)
+    print(predictions_unique)
     conf_mat = confusion_matrix(y_true=truelabel, y_pred=predictions)
     plt.figure()
     plot_confusion_matrix(conf_mat, range(np.max(truelabel) + 1),i)

@@ -85,12 +85,12 @@ model = baseline_model(subclass_amount=subclass_amount)
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc/myAlex_{epoch}.h5',
-
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc_1009/myAlex_{epoch}.h5',
+                                                save_best_only=True,
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
-#save_best_only=True,
-epochs = 70
+#
+epochs = 200
 BATCH_SIZE = 32
 # tensorflow2.1 recommend to using           fit
 # history = model.fit(x=train_dataset,
