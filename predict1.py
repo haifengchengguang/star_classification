@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    df = pd.read_csv(r"C:\Users\Administrator\Desktop\lowmass_sdss_2mass_wise_gaia_part1_45.csv")
+    df = pd.read_csv(r"C:\Users\Administrator\Desktop\lowmass_sdss_2mass_wise_gaia_part2_45.csv")
     X = np.expand_dims(df.values[:, 22:67].astype(float), axis=2)
     json_path = './class_indices.json'
     assert os.path.exists(json_path), "file: '{}' dose not exist.".format(json_path)
@@ -30,7 +30,7 @@ def main():
     # predict_class = np.argmax(result,axis=0)
     # print(predict_class.shape)
     # print(type(predict_class))
-    np.savetxt('lowmass_predict_part1_2.csv', result, delimiter=',',fmt="%.5f")
+    np.savetxt('lowmass_predict_part2.csv', result, delimiter=',',fmt="%.5f")
     # print_res = "class: {}   prob: {:.3}".format(class_indict[str(predict_class)],
     #                                              result[predict_class])
     # plt.title(print_res)
@@ -40,3 +40,4 @@ def main():
 if __name__ == '__main__':
     print('start')
     main()
+    print('end')

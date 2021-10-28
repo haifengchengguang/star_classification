@@ -1,6 +1,7 @@
 import itertools
 import json
 
+from imblearn.under_sampling import EditedNearestNeighbours
 from tensorflow import keras
 
 import matplotlib.pyplot as plt
@@ -12,11 +13,13 @@ from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from collections import Counter
 from imblearn.over_sampling import SMOTE
-
-df = pd.read_csv(r"E:\学习资料\天文\作业五\normalize2021102\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45.csv")
+from imblearn.combine import SMOTEENN
+df = pd.read_csv(r"C:\Users\Administrator\Desktop\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45_copy1.csv")
 X = np.expand_dims(df.values[:, 22:67].astype(float), axis=2)
-Y = df.values[:, 70]
+Y = df.values[:, 71]
 #subclass_amount=21
+
+# 编码以及各类型恒星的编号保存文件
 # 恒星分类编码为数字
 encoder = LabelEncoder()
 Y_encoded = encoder.fit_transform(Y)
@@ -32,24 +35,28 @@ d=zip(a,classes_1)
 c=dict(d)
 print(c)
 json_str = json.dumps(c)
-with open('class_indices.json', 'w') as json_file:
+with open('class_indices_20.json', 'w') as json_file:
     json_file.write(json_str)
+
 # 划分训练集，测试集
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.1, random_state=0)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.3, random_state=0)
 print(type(X_test))
 print(type(Y_train))
 print(Counter(Y))
 
 # ytest_class=encoder.inverse_transform(Y_test)
 # print(ytest_class)
-
+# 进行过采样
 sm = SMOTE(k_neighbors=1)
+#smote = SMOTE(k_neighbors=1)
+#enn = EditedNearestNeighbours(n_neighbors=1)
+#sm=SMOTEENN(random_state=42,smote=smote)
 X_train_=X_train.reshape(X_train.shape[0],-1)
 X_smotesampled, y_smotesampled = sm.fit_resample(X_train_,Y_train)
 X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
 print(type(X_smotesampled.shape))
 
-#混淆矩阵定义
+# 混淆矩阵定义
 def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm.jet):
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
@@ -67,7 +74,8 @@ def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm
     plt.tight_layout()
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
-    plt.savefig(f'./save_weights_extinc_1009_png/test_{i_1}.png', dpi=400, bbox_inches='tight', transparent=False)
+    #plt.title(title)
+    plt.savefig(f'./save_weights_1027/save_weights_1027_png/test_{i_1}_1.png', dpi=400, bbox_inches='tight', transparent=False)
     plt.show()
 def plot_confuse(model, x_val, y_val,i):
     predictions = model.predict_classes(x_val)
@@ -83,7 +91,7 @@ def plot_confuse(model, x_val, y_val,i):
     plot_confusion_matrix(conf_mat, range(np.max(truelabel) + 1),i)
 
 # 卷积网络可视化
-def visual(model, data, num_layer=1):
+def visual(model, data, num_layer=4):
     # data:图像array数据
     # layer:第n层的输出
     layer = keras.backend.function([model.layers[0].input], [model.layers[num_layer].output])

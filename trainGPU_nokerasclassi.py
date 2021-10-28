@@ -3,7 +3,8 @@ import os
 import json
 
 from model1 import baseline_model
-from pretreatment import subclass_amount, X_smotesampled, y_smotesampled, X_test, Y_test
+from model_learning_rate import baseline_model_lr
+from pretreatment import X_smotesampled, y_smotesampled, X_test, Y_test, visual
 
 os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin")
 os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/cudnn/bin")
@@ -79,18 +80,18 @@ tf.config.experimental.list_physical_devices('GPU')
 #     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 #     return model
 
-
-model = baseline_model(subclass_amount=subclass_amount)
+subclass_amount=20
+model = baseline_model_lr(subclass_amount=subclass_amount)
 # model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0005),
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='./save_weights_extinc_1009/myAlex_{epoch}.h5',
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='save_weights_1027/myAlex_{epoch}.h5',
                                                 save_best_only=True,
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
 #
-epochs = 200
+epochs = 75
 BATCH_SIZE = 32
 # tensorflow2.1 recommend to using           fit
 # history = model.fit(x=train_dataset,
@@ -186,3 +187,4 @@ def plot_confuse(model, x_val, y_val):
 
 # 显示混淆矩阵
 plot_confuse(model, X_test, Y_test)
+visual(model, X_smotesampled, 4)
