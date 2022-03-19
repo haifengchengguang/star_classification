@@ -14,7 +14,7 @@ from tqdm import tqdm
 # csv_reader = csv.reader(open("./testdataresult_sql.csv"))
 # result=np
 # #sep 指定分隔符
-data = pd.read_table("lowmass_predict_part2.csv",sep=",")
+data = pd.read_table("gaia_color_cut/gaia_bp_cut_predit.csv",sep=",")
 max_value=data.max(axis=1)
 
 #print(max_value)
@@ -51,9 +51,9 @@ max_index=data.idxmax(axis=1)
 # # print("------------------------------------------------------------------------------------")
 # # print(result2.shape)
 # print("best")
-np.savetxt('lowmass_predict_part2_best_index_2.csv', max_index, fmt="%s", delimiter=',')
+np.savetxt('gaia_color_cut/gaia_bp_cut_predict_index.csv', max_index, fmt="%s", delimiter=',')
 # print("second")
-np.savetxt('lowmass_predict_part2_best_value_2.csv', max_value,fmt="%s",delimiter=',')
+np.savetxt('gaia_color_cut/gaia_bp_cut_predict_value.csv', max_value,fmt="%s",delimiter=',')
 print("end")
 
     # row_max_value=row.max()

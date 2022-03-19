@@ -14,9 +14,9 @@ from sklearn.model_selection import cross_val_score, train_test_split, KFold
 from collections import Counter
 from imblearn.over_sampling import SMOTE
 from imblearn.combine import SMOTEENN
-df = pd.read_csv(r"C:\Users\Administrator\Desktop\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45_copy1.csv")
+df = pd.read_csv(r"E:\学习资料\天文\作业五\2021118\full_match_rizjhkw1_id_ra_dec_distance_extinc_1009_45.csv")
 X = np.expand_dims(df.values[:, 22:67].astype(float), axis=2)
-Y = df.values[:, 71]
+Y = df.values[:, 70]
 #subclass_amount=21
 
 # 编码以及各类型恒星的编号保存文件
@@ -35,26 +35,27 @@ d=zip(a,classes_1)
 c=dict(d)
 print(c)
 json_str = json.dumps(c)
-with open('class_indices_20.json', 'w') as json_file:
+with open('class_indices_2021127.json', 'w') as json_file:
     json_file.write(json_str)
 
 # 划分训练集，测试集
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.3, random_state=0)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y_onehot, test_size=0.1, random_state=0)
 print(type(X_test))
 print(type(Y_train))
 print(Counter(Y))
 
 # ytest_class=encoder.inverse_transform(Y_test)
 # print(ytest_class)
-# 进行过采样
-sm = SMOTE(k_neighbors=1)
-#smote = SMOTE(k_neighbors=1)
-#enn = EditedNearestNeighbours(n_neighbors=1)
-#sm=SMOTEENN(random_state=42,smote=smote)
-X_train_=X_train.reshape(X_train.shape[0],-1)
-X_smotesampled, y_smotesampled = sm.fit_resample(X_train_,Y_train)
-X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
-print(type(X_smotesampled.shape))
+
+# # 进行过采样
+# sm = SMOTE(k_neighbors=1)
+# #smote = SMOTE(k_neighbors=1)
+# #enn = EditedNearestNeighbours(n_neighbors=1)
+# #sm=SMOTEENN(random_state=42,smote=smote)
+# X_train_=X_train.reshape(X_train.shape[0],-1)
+# X_smotesampled, y_smotesampled = sm.fit_resample(X_train_,Y_train)
+# X_smotesampled=X_smotesampled.reshape(X_smotesampled.shape[0], 45,1)
+# print(type(X_smotesampled.shape))
 
 # 混淆矩阵定义
 def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm.jet):
@@ -75,7 +76,7 @@ def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
     #plt.title(title)
-    plt.savefig(f'./save_weights_1027/save_weights_1027_png/test_{i_1}_1.png', dpi=400, bbox_inches='tight', transparent=False)
+    #plt.savefig(f'./save2021127/png/test_{i_1}_1.png', dpi=400, bbox_inches='tight', transparent=False)
     plt.show()
 def plot_confuse(model, x_val, y_val,i):
     predictions = model.predict_classes(x_val)

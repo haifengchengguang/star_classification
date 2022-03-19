@@ -4,10 +4,11 @@ import json
 
 from model1 import baseline_model
 from model_learning_rate import baseline_model_lr
-from pretreatment import X_smotesampled, y_smotesampled, X_test, Y_test, visual
+from pretreatment import X_train, Y_train, X_test, Y_test, visual, subclass_amount
+#,X_smotesampled,y_smotesampled
 
-os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin")
-os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/cudnn/bin")
+#os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/bin")
+#os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.4/cudnn/bin")
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -80,13 +81,13 @@ tf.config.experimental.list_physical_devices('GPU')
 #     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 #     return model
 
-subclass_amount=20
+
 model = baseline_model_lr(subclass_amount=subclass_amount)
 # model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0005),
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='save_weights_1027/myAlex_{epoch}.h5',
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='save20211127/myAlex_{epoch}.h5',
                                                 save_best_only=True,
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
@@ -100,8 +101,33 @@ BATCH_SIZE = 32
 #                         validation_data=val_dataset,
 #                         validation_steps=val_num // batch_size,
 #                         callbacks=callbacks)
-history = model.fit(X_smotesampled,
-                    y_smotesampled,
+class_weight = {
+        0: 1.0,
+        1: 1.0,
+        2: 1.0,
+        3: 1.0,
+        4: 1.0,
+        5: 1.0,
+        6: 1.0,
+        7: 1.0,
+        8: 1.0,
+        9: 1.0,
+        10:2.0,
+        11:1.0,
+        12:1.1,
+        13:1.2,
+        14:1.3,
+        15:1.4,
+        16:1.5,
+        17:1.6,
+        18:1.7,
+        19:1.8,
+        20:1.0,
+
+}
+history = model.fit(X_train,
+                    Y_train,
+                    class_weight=class_weight,
                     batch_size=BATCH_SIZE,
                     validation_data=(X_test, Y_test),
                     validation_freq=1,
@@ -187,4 +213,4 @@ def plot_confuse(model, x_val, y_val):
 
 # 显示混淆矩阵
 plot_confuse(model, X_test, Y_test)
-visual(model, X_smotesampled, 4)
+#visual(model, X_smotesampled, 4)
