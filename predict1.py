@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    df = pd.read_csv(r"E:\学习资料\天文\作业五\gaia_color_cut\gaia_bp_cut_sdss_wise_extinc_45.csv")
+    df = pd.read_csv(r"E:\学习资料\天文\作业五\gaia_color_cut\gaia_rpAndbp_rp_cut_sdss_wise_lite_extinc_45.csv")
     X = np.expand_dims(df.values[:, 11:].astype(float), axis=2)
     json_path = './class_indices.json'
     assert os.path.exists(json_path), "file: '{}' dose not exist.".format(json_path)
@@ -30,7 +30,7 @@ def main():
     # predict_class = np.argmax(result,axis=0)
     # print(predict_class.shape)
     # print(type(predict_class))
-    np.savetxt('gaia_color_cut/gaia_bp_cut_predit.csv', result, delimiter=',',fmt="%.5f")
+    np.savetxt('gaia_color_cut/20220324/gaia_bp_cut_predit.csv', result, delimiter=',',fmt="%.5f")
     # print_res = "class: {}   prob: {:.3}".format(class_indict[str(predict_class)],
     #                                              result[predict_class])
     # plt.title(print_res)

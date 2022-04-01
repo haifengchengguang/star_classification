@@ -35,7 +35,7 @@ d=zip(a,classes_1)
 c=dict(d)
 print(c)
 json_str = json.dumps(c)
-with open('class_indices_2021127.json', 'w') as json_file:
+with open('nostrengthen20220331/class_indices.json', 'w') as json_file:
     json_file.write(json_str)
 
 # 划分训练集，测试集
@@ -76,7 +76,7 @@ def plot_confusion_matrix(cm, classes,i_1, title='Confusion matrix', cmap=plt.cm
     plt.ylabel('真实类别')
     plt.xlabel('预测类别')
     #plt.title(title)
-    #plt.savefig(f'./save2021127/png/test_{i_1}_1.png', dpi=400, bbox_inches='tight', transparent=False)
+    plt.savefig(f'./nostrengthen20220327/png/test_{i_1}_1.png', dpi=400, bbox_inches='tight', transparent=False)
     plt.show()
 def plot_confuse(model, x_val, y_val,i):
     predictions = model.predict_classes(x_val)

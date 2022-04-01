@@ -4,9 +4,9 @@ from pretreatment import plot_confuse, X_test, Y_test, visual, X_train, subclass
 
 print(subclass_amount)
 model=baseline_model_lr(subclass_amount=subclass_amount)
-list=[45]
+list=range(1,182)
 for i in list:
-    weighs_path = "./save_weights/myAlex_"+str(i)+".h5"
+    weighs_path = "nostrengthen20220331/myAlex_"+str(i)+".h5"
     #assert os.path.exists(img_path), "file: '{}' dose not exist.".format(weighs_path)
     model.load_weights(weighs_path)
     print("i="+str(i))

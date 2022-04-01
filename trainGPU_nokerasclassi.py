@@ -87,12 +87,12 @@ model = baseline_model_lr(subclass_amount=subclass_amount)
 #                   loss=tf.keras.losses.CategoricalCrossentropy(from_logits=False),
 #                   metrics=["accuracy"])
 
-callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='save20211127/myAlex_{epoch}.h5',
-                                                save_best_only=True,
+callbacks = [tf.keras.callbacks.ModelCheckpoint(filepath='nostrengthen20220331/myAlex_{epoch}.h5',
+                                                #save_best_only=True,
                                                 save_weights_only=True,
                                                 monitor='val_loss')]
 #
-epochs = 75
+epochs = 200
 BATCH_SIZE = 32
 # tensorflow2.1 recommend to using           fit
 # history = model.fit(x=train_dataset,
@@ -101,33 +101,33 @@ BATCH_SIZE = 32
 #                         validation_data=val_dataset,
 #                         validation_steps=val_num // batch_size,
 #                         callbacks=callbacks)
-class_weight = {
-        0: 1.0,
-        1: 1.0,
-        2: 1.0,
-        3: 1.0,
-        4: 1.0,
-        5: 1.0,
-        6: 1.0,
-        7: 1.0,
-        8: 1.0,
-        9: 1.0,
-        10:2.0,
-        11:1.0,
-        12:1.1,
-        13:1.2,
-        14:1.3,
-        15:1.4,
-        16:1.5,
-        17:1.6,
-        18:1.7,
-        19:1.8,
-        20:1.0,
-
-}
+# class_weight = {
+#         0: 1.0,
+#         1: 1.0,
+#         2: 1.0,
+#         3: 1.0,
+#         4: 1.0,
+#         5: 1.0,
+#         6: 1.0,
+#         7: 1.0,
+#         8: 1.0,
+#         9: 1.0,
+#         10:2.0,
+#         11:1.0,
+#         12:1.1,
+#         13:1.2,
+#         14:1.3,
+#         15:1.4,
+#         16:1.5,
+#         17:1.6,
+#         18:1.7,
+#         19:1.8,
+#         20:1.0,
+#
+# }
 history = model.fit(X_train,
                     Y_train,
-                    class_weight=class_weight,
+                    #class_weight=class_weight,
                     batch_size=BATCH_SIZE,
                     validation_data=(X_test, Y_test),
                     validation_freq=1,
